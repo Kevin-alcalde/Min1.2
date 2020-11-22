@@ -65,62 +65,31 @@ public class Covid19ManagerImpl implements Covid19Manager {
     }
 
     @Override
-    public LinkedList<Caso> ordenarCasos(String idBrote)
-    {
+    public List<Caso> ordenarCasos(String idBrote) {
         Brote broteSeleccionado = brotes.get(idBrote);
-        broteSeleccionado.getCasosList();
-        ArrayList<Caso> CasosOrdenados1 = null;
-        ArrayList<Caso> CasosOrdenados2 = null;
-        ArrayList<Caso> CasosOrdenados3 = null;
-        LinkedList<Caso> ListaOrdenada = null;
 
+        for (Caso f : broteSeleccionado.getCasosList()) {
 
+            Collections.sort(broteSeleccionado.casosList, new Comparator<Caso>() {
+                @Override
+                public int compare(Caso o1, Caso o2) {
+                    return o1.getClasificacion().compareTo(o2.getClasificacion());
+                }
+            });
 
-        for (Caso f: broteSeleccionado.getCasosList())
-        {
-            if (f.getClasificacion()=="confirmado"){
-
-                CasosOrdenados1.add(f);
-                Collections.sort(CasosOrdenados1, new Comparator<Caso>() {
+                Collections.sort(broteSeleccionado.casosList, new Comparator<Caso>() {
                     @Override
                     public int compare(Caso o1, Caso o2) {
-                        return o1.getFechaInforme().compareTo(o2.getFechaInforme());
-                    }
-                });
 
-            }
-            if (f.getClasificacion()=="sospechoso"){
-                CasosOrdenados2.add(f);
-                Collections.sort(CasosOrdenados2, new Comparator<Caso>() {
-                    @Override
-                    public int compare(Caso o1, Caso o2) {
                         return o1.getFechaInforme().compareTo(o2.getFechaInforme());
                     }
-                });
-            }
-            if (f.getClasificacion()=="nocaso"){
-                CasosOrdenados3.add(f);
-                Collections.sort(CasosOrdenados3, new Comparator<Caso>() {
-                    @Override
-                    public int compare(Caso o1, Caso o2) {
-                        return o1.getFechaInforme().compareTo(o2.getFechaInforme());
-                    }
-                });
 
-            }
+                });
 
 
         }
-        ListaOrdenada.addAll(CasosOrdenados1);
-        ListaOrdenada.addAll(CasosOrdenados2);
-        ListaOrdenada.addAll(CasosOrdenados3);
-
-        logger.info("idBrote a ordenar: "+ idBrote);
-
-        return ListaOrdenada;
-
+        return broteSeleccionado.casosList;
     }
-
 
 
     @Override
@@ -158,23 +127,23 @@ public class Covid19ManagerImpl implements Covid19Manager {
 
     }
 
-
-
-
-
-
-
-
-
     @Override
     public List<Caso> casoBrote(String idBrote) {
         return null;
     }
 
 
-    public Brote getBrote (String id){
-        Brote brote = this.brotes.get(id);
-        return brote;
+
+
+    public Brote getBrote (String idBrote)
+    {
+        for(Brote b: this.brotes.values()){
+            if(b.getIdBrote().equals(idBrote)){
+                return b;
+            }
+        }
+        return null;
+
     }
 
 
